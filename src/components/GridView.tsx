@@ -24,7 +24,7 @@ const GridView = ({ nodes, parentID, updateGridViewProps }: GridViewProps) => {
   return (
     <div className="flex w-11/12 mx-auto flex-wrap border-2 bg-gray-300 border-b-gray-500 border-l-gray-500 border-r-gray-100 border-t-gray-100">
       <div className="border-2 w-full m-1 bg-gray-300 border-t-gray-500 border-r-gray-500 border-l-gray-100 border-b-gray-100">
-        <div className="flex flex-wrap bg-white text-black md:justify-start justify-evenly">
+        <div className="flex flex-wrap bg-white text-black md:justify-start justify-evenly max-h-96 overflow-scroll">
           {nodes.map((node) => (
             <div
               id={node.id}
