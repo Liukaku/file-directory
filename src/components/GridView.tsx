@@ -1,4 +1,4 @@
-import { ApiTree } from "@/types";
+import { ApiTree, imageFileTypes } from "@/types";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
@@ -14,8 +14,6 @@ type GridViewProps = {
 };
 
 const GridView = ({ nodes, parentID, updateGridViewProps }: GridViewProps) => {
-  const imageFileTypes = ["png", "jpg", "jpeg", "gif", "svg", "webp"];
-
   const toggleShow = (id: string, name: string) => {
     const newNodes = nodes.find((node) => node.id === id);
     if (nodes && newNodes) {

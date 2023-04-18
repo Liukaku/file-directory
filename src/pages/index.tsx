@@ -9,7 +9,7 @@ import GridView from "@/components/GridView";
 export default function Home() {
   const router = useRouter();
   const [data, setData] = useState<ApiTree[]>([]);
-  const [toggleView, setToggleView] = useState<View>("grid");
+  const [toggleView, setToggleView] = useState<View>("list");
   const [gridViewProps, setGridViewProps] = useState<ApiTree[]>([]);
   const [parentIds, setParentIds] = useState<Record<string, string>[]>([
     { name: "Home", id: "a1" },
@@ -110,7 +110,11 @@ export default function Home() {
                 </span>
               ))}
             </div>
-            <TreeView nodes={data} />
+            <div className="flex w-11/12 mx-auto flex-wrap border-2 bg-gray-300 border-b-gray-500 border-l-gray-500 border-r-gray-100 border-t-gray-100">
+              <div className="border-2 w-full m-1 bg-gray-300 border-t-gray-500 border-r-gray-500 border-l-gray-100 border-b-gray-100 max-h-96 overflow-scroll">
+                <TreeView nodes={data} />
+              </div>
+            </div>
           </>
         ) : (
           <>

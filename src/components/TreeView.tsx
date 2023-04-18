@@ -1,5 +1,6 @@
-import { ApiTree } from "@/types";
+import { ApiTree, imageFileTypes } from "@/types";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 
 type TreeViewProps = {
   nodes: ApiTree[];
@@ -24,22 +25,44 @@ const TreeView = ({ nodes }: TreeViewProps) => {
   };
 
   return (
-    <ul className="list-disc list-inside ml-10">
+    <ul className="list-disc list-inside pl-3 bg-white">
       {nodes.map((node) => (
         <>
           <li
             id={node.id}
             key={node.id}
             className={`${
-              node.type === "folder"
-                ? `cursor-pointer text-red-300`
-                : `text-white cursor-default`
-            }`}
+              node.type === "folder" ? `cursor-pointer` : `cursor-default`
+            } text-black  border-l border-l-black border-dashed flex py-1`}
             onClick={(e) => {
               node.type === "folder" && toggleShow(node.id);
-              // console.log(e.target?.id);
             }}
           >
+            {node.type === "folder" ? (
+              <Image
+                className="mx-3"
+                src={
+                  node.children.length > 0
+                    ? "/contentsFolder.png"
+                    : "/emptyFolder.png"
+                }
+                width={20}
+                height={20}
+                alt=""
+              />
+            ) : (
+              <Image
+                className="mx-3"
+                src={
+                  node.ext && imageFileTypes.includes(node.ext)
+                    ? "/fileImage.png"
+                    : "/textFile.png"
+                }
+                width={20}
+                height={20}
+                alt=""
+              />
+            )}
             {node.name}
             {node.ext && `.${node.ext}`}
           </li>

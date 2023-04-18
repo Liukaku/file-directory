@@ -16,3 +16,5 @@ export interface ApiTree {
 }
 
 export type View = "list" | "grid";
+
+export const imageFileTypes = ["png", "jpg", "jpeg", "gif", "svg", "webp"];
