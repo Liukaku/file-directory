@@ -24,7 +24,7 @@ const GridView = ({ nodes, parentID, updateGridViewProps }: GridViewProps) => {
   return (
     <div className="flex w-11/12 mx-auto flex-wrap border-2 bg-gray-300 border-b-gray-500 border-l-gray-500 border-r-gray-100 border-t-gray-100">
       <div className="border-2 w-full m-1 bg-gray-300 border-t-gray-500 border-r-gray-500 border-l-gray-100 border-b-gray-100">
-        <div className="flex flex-wrap bg-white text-black justify-start">
+        <div className="flex flex-wrap bg-white text-black md:justify-start justify-evenly">
           {nodes.map((node) => (
             <div
               id={node.id}
@@ -33,7 +33,7 @@ const GridView = ({ nodes, parentID, updateGridViewProps }: GridViewProps) => {
                 node.type === "folder" && node.children.length
                   ? `cursor-pointer`
                   : ` cursor-default`
-              } w-2/12 text-center m-2`}
+              } w-4/12 md:w-2/12 text-center m-2`}
               onClick={(e) => {
                 node.type === "folder" &&
                   node.children.length &&

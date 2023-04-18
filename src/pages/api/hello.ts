@@ -17,7 +17,6 @@ export default function handler(
       },
     });
     const jsonData = await response.json();
-    console.log(jsonData);
     return jsonData;
   };
   funcT().then((response) => {
