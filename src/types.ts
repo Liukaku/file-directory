@@ -14,3 +14,5 @@ export interface ApiTree {
   children: ApiTree[];
   ext?: string;
 }
+
+export type View = "list" | "grid";
