@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
 import { ApiResponse, ApiTree } from "@/types";
+import TreeView from "@/components/TreeView";
 
 export default function Home() {
   const [data, setData] = useState<ApiTree[]>([]);
@@ -36,6 +37,7 @@ export default function Home() {
       {nodes.map((node) => (
         <li key={node.id}>
           {node.name}
+          {node.ext && `.${node.ext}`}
           {node.children &&
             node.children.length > 0 &&
             renderTree(node.children)}
@@ -46,7 +48,7 @@ export default function Home() {
 
   return (
     <main>
-      <div>{renderTree(data)}</div>
+      <TreeView nodes={data} />
     </main>
   );
 }

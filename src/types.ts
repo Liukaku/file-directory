@@ -1,5 +1,5 @@
 export interface ApiResponse {
-  extension?: string;
+  ext?: string;
   id: string;
   name: string;
   parent: string | null;
@@ -12,4 +12,5 @@ export interface ApiTree {
   parent: string | null;
   type: "folder" | "file";
   children: ApiTree[];
+  ext?: string;
 }
