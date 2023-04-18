@@ -33,7 +33,7 @@ const GridView = ({ nodes, parentID, updateGridViewProps }: GridViewProps) => {
                 node.type === "folder" && node.children.length
                   ? `cursor-pointer`
                   : ` cursor-default`
-              } w-4/12 md:w-2/12 text-center m-2`}
+              } w-4/12 md:w-2/12 text-center m-2 break-words`}
               onClick={(e) => {
                 node.type === "folder" &&
                   node.children.length &&

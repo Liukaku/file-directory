@@ -39,29 +39,33 @@ const TreeView = ({ nodes }: TreeViewProps) => {
             }}
           >
             {node.type === "folder" ? (
-              <Image
-                className="mx-3"
-                src={
-                  node.children.length > 0
-                    ? "/contentsFolder.png"
-                    : "/emptyFolder.png"
-                }
-                width={20}
-                height={20}
-                alt=""
-              />
+              <div className="items-center grid">
+                <Image
+                  className="mx-3 object-contain"
+                  src={
+                    node.children.length > 0
+                      ? "/contentsFolder.png"
+                      : "/emptyFolder.png"
+                  }
+                  width={20}
+                  height={20}
+                  alt=""
+                />
+              </div>
             ) : (
-              <Image
-                className="mx-3"
-                src={
-                  node.ext && imageFileTypes.includes(node.ext)
-                    ? "/fileImage.png"
-                    : "/textFile.png"
-                }
-                width={20}
-                height={20}
-                alt=""
-              />
+              <div className="items-center grid">
+                <Image
+                  className="mx-3 object-contain"
+                  src={
+                    node.ext && imageFileTypes.includes(node.ext)
+                      ? "/fileImage.png"
+                      : "/textFile.png"
+                  }
+                  width={20}
+                  height={20}
+                  alt=""
+                />
+              </div>
             )}
             {node.name}
             {node.ext && `.${node.ext}`}
