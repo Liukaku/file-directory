@@ -12,7 +12,7 @@ import Toggle from "@/components/Toggle";
 export default function Home() {
   const router = useRouter();
   const [data, setData] = useState<ApiTree[]>([]);
-  const [toggleView, setToggleView] = useState<View>("grid");
+  const [toggleView, setToggleView] = useState<View>("list");
   const [gridViewProps, setGridViewProps] = useState<ApiTree[]>([]);
   const [parentIds, setParentIds] = useState<Record<string, string>[]>([
     { name: "Home", id: "a1" },
@@ -89,10 +89,25 @@ export default function Home() {
     </ul>
   );
 
-  const navBarClick = (id: string) => {
-    const newNodes = data.find((node) => node.id === id);
-    if (data && newNodes && id !== "a1") {
-      updateGridViewProps(newNodes, id, "Home", "REMOVE");
+  const navBarClick = (id: string, n: number) => {
+    if (n + 1 === parentIds.length) return;
+
+    const newNodes = (nodes: ApiTree[], id: string): ApiTree | undefined => {
+      for (let i = 0; i < nodes.length; i++) {
+        if (nodes[i].id === id) {
+          return nodes[i];
+        } else if (nodes[i].children && nodes[i].children.length > 0) {
+          const result = newNodes(nodes[i].children, id);
+          if (result) {
+            return result;
+          }
+        }
+      }
+      return undefined;
+    };
+    const newDoesResult = newNodes(data, id);
+    if (data && newDoesResult && id !== "a1") {
+      updateGridViewProps(newDoesResult, id, "Home", "REMOVE");
     } else {
       setGridViewProps(data);
       setParentIds([{ name: "Home", id: "a1" }]);
@@ -105,106 +120,72 @@ export default function Home() {
         <div className="p-1 text-xl text-white mb-5 headerBarGrey leading-none bg-zinc-300 border-t-zinc-200 border-r-zinc-200 border-l-zinc-400 border-b-zinc-400">
           <h1>File Explorer</h1>
         </div>
-        {data && data.length > 0 ? (
-          toggleView === "list" ? (
-            <>
-              <div className="flex mx-auto w-11/12">
-                <div className="my-3 px-3 mr-1 py-1 h-auto w-full bg-white  duration-100 text-black border-2 border-t-gray-500 border-r-gray-500 border-l-gray-100 border-b-gray-100">
-                  <span key={1} className="py-1 h-auto ">
-                    Home
-                  </span>
-                </div>
-                <Toggle setToggleView={setToggleView} toggleView={toggleView} />
-              </div>
-              <div className="flex w-11/12 mx-auto flex-wrap border-2 bg-gray-300 border-b-gray-500 border-l-gray-500 border-r-gray-100 border-t-gray-100">
-                <div className="border-2 w-full m-1 bg-gray-300 border-t-gray-500 border-r-gray-500 border-l-gray-100 border-b-gray-100 max-h-96 overflow-scroll">
-                  <div className="py-1 bg-white">
-                    <AnimatePresence>
-                      <TreeView nodes={data} />
-                    </AnimatePresence>
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="flex mx-auto w-11/12">
-                <div className="my-3 px-3 mr-1 py-1 h-auto w-full bg-white  duration-100 text-black border-2 border-t-gray-500 border-r-gray-500 border-l-gray-100 border-b-gray-100 ">
-                  {parentIds.map((id, n) => (
-                    <span
-                      key={id.id}
-                      className="cursor-pointer hover:bg-cyan-100 py-1 h-auto "
-                      onClick={() => {
-                        navBarClick(id.id);
-                      }}
-                    >
-                      {id.name}
-                      {n + 1 !== parentIds.length && " / "}
-                    </span>
-                  ))}
-                </div>
-                <Toggle setToggleView={setToggleView} toggleView={toggleView} />
-              </div>
-              <GridView
-                nodes={gridViewProps}
-                updateGridViewProps={updateGridViewProps}
-              />
-            </>
-          )
-        ) : (
-          <div className="">
-            <div className="border-2 bg-white w-10/12 mx-auto m-1 border-t-gray-500 border-r-gray-500 border-l-gray-100 border-b-gray-100">
-              <div className="my-10">
-                <AnimatePresence>
-                  <motion.div
-                    initial={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 100 }}
-                    transition={{
-                      duration: 0.3,
-                      ease: "anticipate",
-                      delay: 0.5,
+        <>
+          <div className="flex mx-auto w-11/12">
+            <div className="my-3 px-3 mr-1 py-1 h-auto w-full bg-white  duration-100 text-black border-2 border-t-gray-500 border-r-gray-500 border-l-gray-100 border-b-gray-100">
+              {toggleView === "list" ? (
+                <span key={1} className="py-1 h-auto border border-white  ">
+                  Home
+                </span>
+              ) : (
+                parentIds.map((id, n) => (
+                  <span
+                    key={id.id}
+                    className="cursor-pointer hover:bg-teal-100 border border-white hover:border-teal-400 active:bg-teal-200 duration-200 ease-in-out py-1 h-auto "
+                    onClick={() => {
+                      navBarClick(id.id, n);
                     }}
                   >
-                    <Image
-                      className="mx-auto"
-                      src={"/sonic-running.gif"}
-                      height={50}
-                      width={50}
-                      alt={""}
-                    />
-                  </motion.div>
+                    {id.name}
+                    {n + 1 !== parentIds.length && " / "}
+                  </span>
+                ))
+              )}
+            </div>
+            <Toggle setToggleView={setToggleView} toggleView={toggleView} />
+          </div>
+          <div className="flex w-11/12 mx-auto flex-wrap border-2 bg-gray-300 border-b-gray-500 border-l-gray-500 border-r-gray-100 border-t-gray-100">
+            <div className="border-2 w-full m-1 bg-gray-300 border-t-gray-500 border-r-gray-500 border-l-gray-100 border-b-gray-100 max-h-96 overflow-y-scroll overflow-x-hidden">
+              <div className="py-1 bg-white">
+                <AnimatePresence>
+                  {data && data.length > 0 ? (
+                    toggleView === "list" ? (
+                      <AnimatePresence>
+                        <TreeView nodes={data} />
+                      </AnimatePresence>
+                    ) : (
+                      <GridView
+                        nodes={gridViewProps}
+                        updateGridViewProps={updateGridViewProps}
+                      />
+                    )
+                  ) : (
+                    <motion.div
+                      className="1/12 mx-auto"
+                      key={1}
+                      // initial={{ opacity: 0, x: -100 }}
+                      initial={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 100 }}
+                      transition={{
+                        duration: 0.2,
+                        ease: "easeInOut",
+                        delay: 0,
+                      }}
+                    >
+                      <Image
+                        className="mx-auto"
+                        src={"/sonic-running.gif"}
+                        height={50}
+                        width={50}
+                        alt={""}
+                      />
+                    </motion.div>
+                  )}
                 </AnimatePresence>
-                <div className="text-black w-full text-center flex">
-                  <div className="mx-auto">
-                    <AnimatePresence>
-                      <ul className="flex list-none mt-4">
-                        {loadingText.split("").map((char, i) => {
-                          return (
-                            <motion.li
-                              className="mx-1"
-                              initial={{ y: -10 }}
-                              animate={{ y: 0 }}
-                              exit={{ opacity: 0, y: -10 }}
-                              transition={{
-                                duration: 0.3,
-                                ease: "anticipate",
-                                delay: 0 + i / 10,
-                                repeat: Infinity,
-                                repeatDelay: 2 + i / 30,
-                              }}
-                            >
-                              {char}
-                            </motion.li>
-                          );
-                        })}
-                      </ul>
-                    </AnimatePresence>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
-        )}
+        </>
       </div>
     </main>
   );
