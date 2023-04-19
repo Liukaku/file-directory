@@ -106,7 +106,7 @@ export default function Home() {
 
   return (
     <main className="">
-      <div className="md:w-4/5 w-10/12 mt-16 mx-auto border-2 pb-10 bg-gray-300 border-b-gray-500 border-l-gray-500 border-r-gray-100 border-t-gray-100 shadow-xl">
+      <div className="md:w-2/5 w-10/12 mt-16 mx-auto border-2 pb-10 bg-gray-300 border-b-gray-500 border-l-gray-500 border-r-gray-100 border-t-gray-100 shadow-xl">
         <div className="p-1 text-xl text-white mb-5 headerBarGrey leading-none bg-zinc-300 border-t-zinc-200 border-r-zinc-200 border-l-zinc-400 border-b-zinc-400">
           <h1>File Explorer</h1>
         </div>
