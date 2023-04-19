@@ -11,6 +11,7 @@ type TreeViewProps = {
 const TreeView = ({ nodes }: TreeViewProps) => {
   const [show, setShow] = useState(initialState());
 
+  // Set initial state of folders to be closed, object structure to handle individual folder state
   function initialState() {
     const state = nodes.reduce((acc, node) => {
       if (node.type === "folder") {

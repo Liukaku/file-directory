@@ -21,24 +21,26 @@ export default function Home() {
 
   useEffect(() => {
     callHelloApiRoute();
-    // window.addEventListener("focus", (e) => {
-    //   callHelloApiRoute();
-    // });
-    // const setInterValCall = setInterval(() => {
-    //   callHelloApiRoute();
-    // }, 30000);
-    // return () => {
-    //   window.removeEventListener("focus", (e) => {
-    //     callHelloApiRoute();
-    //   });
-    //   clearInterval(setInterValCall);
-    // };
+    window.addEventListener("focus", (e) => {
+      callHelloApiRoute();
+    });
+    const setInterValCall = setInterval(() => {
+      callHelloApiRoute();
+    }, 30000);
+    return () => {
+      window.removeEventListener("focus", (e) => {
+        callHelloApiRoute();
+      });
+      clearInterval(setInterValCall);
+    };
   }, []);
 
+  // Call the API route and set the response to the data state
   const callHelloApiRoute = async () => {
     const res = await fetch("/api/hello");
     const data: ApiResponse[] = await res.json();
 
+    // convert the flat array to a tree structure for easier rendering
     const convertToTree = (data: ApiResponse[]): ApiTree[] => {
       const map: Record<string, ApiTree> = {};
       data.forEach((item) => (map[item.id] = { ...item, children: [] }));
@@ -52,12 +54,12 @@ export default function Home() {
       });
       return tree;
     };
-    console.log(convertToTree(data));
     setData(convertToTree(data));
     setGridViewProps(convertToTree(data));
     setParentIds([{ name: "Home", id: "a1" }]);
   };
 
+  // Update the grid view props when a folder is clicked
   const updateGridViewProps = (
     nodes: ApiTree,
     id: string,
@@ -75,23 +77,11 @@ export default function Home() {
     }
   };
 
-  const renderTree = (nodes: ApiTree[]) => (
-    <ul className="list-disc list-inside ml-10">
-      {nodes.map((node) => (
-        <li key={node.id}>
-          {node.name}
-          {node.ext && `.${node.ext}`}
-          {node.children &&
-            node.children.length > 0 &&
-            renderTree(node.children)}
-        </li>
-      ))}
-    </ul>
-  );
-
+  // Update the grid view props when the nav bar is clicked
   const navBarClick = (id: string, n: number) => {
     if (n + 1 === parentIds.length) return;
 
+    // find the target node in the tree
     const newNodes = (nodes: ApiTree[], id: string): ApiTree | undefined => {
       for (let i = 0; i < nodes.length; i++) {
         if (nodes[i].id === id) {
@@ -116,7 +106,7 @@ export default function Home() {
 
   return (
     <main className="">
-      <div className="md:w-4/5 w-10/12 mt-20 mx-auto border-2 pb-10 bg-gray-300 border-b-gray-500 border-l-gray-500 border-r-gray-100 border-t-gray-100 shadow-xl">
+      <div className="md:w-4/5 w-10/12 mt-16 mx-auto border-2 pb-10 bg-gray-300 border-b-gray-500 border-l-gray-500 border-r-gray-100 border-t-gray-100 shadow-xl">
         <div className="p-1 text-xl text-white mb-5 headerBarGrey leading-none bg-zinc-300 border-t-zinc-200 border-r-zinc-200 border-l-zinc-400 border-b-zinc-400">
           <h1>File Explorer</h1>
         </div>
@@ -163,7 +153,6 @@ export default function Home() {
                     <motion.div
                       className="1/12 mx-auto"
                       key={1}
-                      // initial={{ opacity: 0, x: -100 }}
                       initial={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 100 }}
                       transition={{

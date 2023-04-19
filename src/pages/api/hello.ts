@@ -9,9 +9,9 @@ export default function handler(
   const funcT = async (): Promise<ApiResponse> => {
     const response = await fetch("https://dev.test.sega.co.uk/api/list", {
       method: "GET",
-      mode: "cors", // no-cors, *cors, same-origin
+      mode: "cors",
       cache: "no-cache",
-      credentials: "same-origin", // include, *same-origin, omit
+      credentials: "same-origin",
       headers: {
         "x-secret-api-key": `${process.env.API_KEY}`,
       },
