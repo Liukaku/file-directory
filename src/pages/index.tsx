@@ -178,6 +178,7 @@ export default function Home() {
                         src={"/sonic-running.gif"}
                         height={50}
                         width={50}
+                        loading="eager"
                         alt={""}
                       />
                     </motion.div>

@@ -64,6 +64,7 @@ const GridView = ({
                     ? "/contentsFolder.png"
                     : "/emptyFolder.png"
                 }
+                loading="eager"
                 width={50}
                 height={50}
                 alt=""
@@ -78,6 +79,7 @@ const GridView = ({
                     ? "/fileImage.png"
                     : "/textFile.png"
                 }
+                loading="eager"
                 width={50}
                 height={50}
                 alt=""

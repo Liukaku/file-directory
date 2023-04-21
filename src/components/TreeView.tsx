@@ -60,6 +60,7 @@ const TreeView = ({ nodes, loading }: TreeViewProps) => {
                       ? "/contentsFolder.png"
                       : "/emptyFolder.png"
                   }
+                  loading="eager"
                   width={20}
                   height={20}
                   alt=""
@@ -74,6 +75,7 @@ const TreeView = ({ nodes, loading }: TreeViewProps) => {
                       ? "/fileImage.png"
                       : "/textFile.png"
                   }
+                  loading="eager"
                   width={20}
                   height={20}
                   alt=""
