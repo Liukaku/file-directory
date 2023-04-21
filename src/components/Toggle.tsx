@@ -1,4 +1,4 @@
-import { View } from "@/types";
+import { View } from "@/util";
 import React from "react";
 
 type ToggleProps = {

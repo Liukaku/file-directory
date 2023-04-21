@@ -1,4 +1,4 @@
-import { ApiTree, imageFileTypes } from "@/types";
+import { ApiTree, imageFileTypes, imageHandler } from "@/util";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -74,11 +74,7 @@ const GridView = ({
             <div className=" h-full">
               <Image
                 className="mx-auto"
-                src={
-                  node.ext && imageFileTypes.includes(node.ext)
-                    ? "/fileImage.png"
-                    : "/textFile.png"
-                }
+                src={imageHandler(node.ext)}
                 loading="eager"
                 width={50}
                 height={50}

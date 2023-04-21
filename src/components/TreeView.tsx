@@ -1,4 +1,4 @@
-import { ApiTree, imageFileTypes } from "@/types";
+import { ApiTree, imageFileTypes, imageHandler } from "@/util";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -70,11 +70,7 @@ const TreeView = ({ nodes, loading }: TreeViewProps) => {
               <div className="items-center grid">
                 <Image
                   className="mx-3 object-contain"
-                  src={
-                    node.ext && imageFileTypes.includes(node.ext)
-                      ? "/fileImage.png"
-                      : "/textFile.png"
-                  }
+                  src={imageHandler(node.ext)}
                   loading="eager"
                   width={20}
                   height={20}

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
-import { ApiResponse, ApiTree, View } from "@/types";
+import { ApiResponse, ApiTree, View } from "@/util";
 import Image from "next/image";
 import TreeView from "@/components/TreeView";
 import GridView from "@/components/GridView";
