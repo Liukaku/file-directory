@@ -6,9 +6,10 @@ import { motion, AnimatePresence } from "framer-motion";
 type TreeViewProps = {
   nodes: ApiTree[];
   parentID?: string;
+  loading?: boolean;
 };
 
-const TreeView = ({ nodes }: TreeViewProps) => {
+const TreeView = ({ nodes, loading }: TreeViewProps) => {
   const [show, setShow] = useState(initialState());
 
   // Set initial state of folders to be closed, object structure to handle individual folder state
@@ -36,7 +37,7 @@ const TreeView = ({ nodes }: TreeViewProps) => {
         ease: "anticipate",
         delay: 0.0,
       }}
-      className="list-disc list-inside pl-3 bg-white"
+      className="list-disc list-inside pl-3 bg-white relative"
     >
       {nodes.map((node, i) => (
         <>

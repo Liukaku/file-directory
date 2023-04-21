@@ -12,9 +12,15 @@ type GridViewProps = {
     name: string,
     action: "ADD" | "REMOVE"
   ) => void;
+  loading: boolean;
 };
 
-const GridView = ({ nodes, parentID, updateGridViewProps }: GridViewProps) => {
+const GridView = ({
+  nodes,
+  parentID,
+  updateGridViewProps,
+  loading,
+}: GridViewProps) => {
   const toggleShow = (id: string, name: string) => {
     const newNodes = nodes.find((node) => node.id === id);
     if (nodes && newNodes) {
@@ -32,7 +38,7 @@ const GridView = ({ nodes, parentID, updateGridViewProps }: GridViewProps) => {
         ease: "easeInOut",
         delay: 0,
       }}
-      className="grid-cols-2 grid md:grid-cols-6 bg-white text-black md:justify-start justify-evenly max-h-96 overflow-y-scroll overflow-x-hidden"
+      className="relative grid-cols-2 grid md:grid-cols-4 bg-white text-black md:justify-start justify-evenly max-h-96 overflow-y-scroll overflow-x-hidden"
     >
       {nodes.map((node) => (
         <div
@@ -42,7 +48,7 @@ const GridView = ({ nodes, parentID, updateGridViewProps }: GridViewProps) => {
             node.type === "folder" && node.children.length
               ? `cursor-pointer hover:underline hover:bg-zinc-100 active:bg-zinc-200 duration-100 ease-in-out`
               : ` cursor-default`
-          } w-full md:w-fulltext-center  break-word items-center grid text-center`}
+          } w-full md:w-fulltext-center  break-word items-center grid text-center mb-3`}
           onClick={(e) => {
             node.type === "folder" &&
               node.children.length &&
@@ -50,34 +56,40 @@ const GridView = ({ nodes, parentID, updateGridViewProps }: GridViewProps) => {
           }}
         >
           {node.type === "folder" ? (
-            <Image
-              className="mx-auto"
-              src={
-                node.children.length > 0
-                  ? "/contentsFolder.png"
-                  : "/emptyFolder.png"
-              }
-              width={50}
-              height={50}
-              alt=""
-            />
+            <div className=" h-[81%] mb-2">
+              <Image
+                className="mx-auto grid items-center"
+                src={
+                  node.children.length > 0
+                    ? "/contentsFolder.png"
+                    : "/emptyFolder.png"
+                }
+                width={50}
+                height={50}
+                alt=""
+              />
+            </div>
           ) : (
-            <Image
-              className="mx-auto"
-              src={
-                node.ext && imageFileTypes.includes(node.ext)
-                  ? "/fileImage.png"
-                  : "/textFile.png"
-              }
-              width={50}
-              height={50}
-              alt=""
-            />
+            <div className=" h-full">
+              <Image
+                className="mx-auto"
+                src={
+                  node.ext && imageFileTypes.includes(node.ext)
+                    ? "/fileImage.png"
+                    : "/textFile.png"
+                }
+                width={50}
+                height={50}
+                alt=""
+              />
+            </div>
           )}
-          <span className="w-10/12 mx-auto">
-            {node.name}
-            {node.ext && `.${node.ext}`}
-          </span>
+          <div className="h-full">
+            <span className="w-10/12 mx-auto">
+              {node.name}
+              {node.ext && `.${node.ext}`}
+            </span>
+          </div>
         </div>
       ))}
     </motion.div>

@@ -17,16 +17,24 @@ export default function Home() {
   const [parentIds, setParentIds] = useState<Record<string, string>[]>([
     { name: "Home", id: "a1" },
   ]);
-  const loadingText = "Loading...";
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
     callHelloApiRoute();
-    window.addEventListener("focus", (e) => {
-      callHelloApiRoute();
+    window.addEventListener("focus", async (e) => {
+      setRefreshing(true);
+      setTimeout(async () => {
+        await callHelloApiRoute();
+        setRefreshing(false);
+      }, 1000);
     });
-    const setInterValCall = setInterval(() => {
-      callHelloApiRoute();
-    }, 30000);
+    const setInterValCall = setInterval(async () => {
+      setRefreshing(true);
+      setTimeout(async () => {
+        await callHelloApiRoute();
+        setRefreshing(false);
+      }, 1000);
+    }, 29000);
     return () => {
       window.removeEventListener("focus", (e) => {
         callHelloApiRoute();
@@ -106,7 +114,7 @@ export default function Home() {
 
   return (
     <main className="">
-      <div className="md:w-2/5 w-10/12 mt-16 mx-auto border-2 pb-10 bg-gray-300 border-b-gray-500 border-l-gray-500 border-r-gray-100 border-t-gray-100 shadow-xl">
+      <div className="relative md:w-2/5 w-10/12 mt-16 mx-auto border-2 pb-10 bg-gray-300 border-b-gray-500 border-l-gray-500 border-r-gray-100 border-t-gray-100 shadow-xl">
         <div className="p-1 text-xl text-white mb-5 headerBarGrey leading-none bg-zinc-300 border-t-zinc-200 border-r-zinc-200 border-l-zinc-400 border-b-zinc-400">
           <h1>File Explorer</h1>
         </div>
@@ -136,24 +144,26 @@ export default function Home() {
           </div>
           <div className="flex w-11/12 mx-auto flex-wrap border-2 bg-gray-300 border-b-gray-500 border-l-gray-500 border-r-gray-100 border-t-gray-100">
             <div className="border-2 w-full m-1 bg-gray-300 border-t-gray-500 border-r-gray-500 border-l-gray-100 border-b-gray-100 max-h-96 overflow-y-scroll overflow-x-hidden">
-              <div className="py-1 bg-white">
+              <div className="py-1 bg-white min-h-[5em]">
                 <AnimatePresence>
                   {data && data.length > 0 ? (
                     toggleView === "list" ? (
                       <AnimatePresence>
-                        <TreeView nodes={data} />
+                        <TreeView nodes={data} loading={refreshing} />
                       </AnimatePresence>
                     ) : (
                       <GridView
                         nodes={gridViewProps}
                         updateGridViewProps={updateGridViewProps}
+                        loading={refreshing}
                       />
                     )
                   ) : (
                     <motion.div
-                      className="1/12 mx-auto"
+                      className="1/12 mx-auto absolute md:left-[48%] left-[45%]"
                       key={1}
-                      initial={{ opacity: 1, x: 0 }}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 100 }}
                       transition={{
                         duration: 0.2,
@@ -175,6 +185,28 @@ export default function Home() {
             </div>
           </div>
         </>
+        <AnimatePresence>
+          {refreshing && (
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 10 }}
+              transition={{
+                duration: 0.2,
+                ease: "easeInOut",
+                delay: 0,
+              }}
+              className="absolute bottom-[3%] right-[3%]"
+            >
+              <Image
+                src={"/sonic-running.gif"}
+                alt={""}
+                height={20}
+                width={20}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </main>
   );
