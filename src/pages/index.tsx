@@ -22,26 +22,28 @@ export default function Home() {
   useEffect(() => {
     callHelloApiRoute();
     window.addEventListener("focus", async (e) => {
-      setRefreshing(true);
-      setTimeout(async () => {
-        await callHelloApiRoute();
-        setRefreshing(false);
-      }, 1000);
+      dataRefresh();
     });
+    // the data refresh has a 1 second wait so only need to wait for 29 seconds
     const setInterValCall = setInterval(async () => {
-      setRefreshing(true);
-      setTimeout(async () => {
-        await callHelloApiRoute();
-        setRefreshing(false);
-      }, 1000);
+      dataRefresh();
     }, 29000);
     return () => {
-      window.removeEventListener("focus", (e) => {
-        callHelloApiRoute();
+      window.removeEventListener("focus", async (e) => {
+        dataRefresh();
       });
       clearInterval(setInterValCall);
     };
   }, []);
+
+  // Refresh the data with a 1 second wait for the loading animation and to warn user of refresh
+  const dataRefresh = async () => {
+    setRefreshing(true);
+    setTimeout(async () => {
+      await callHelloApiRoute();
+      setRefreshing(false);
+    }, 1000);
+  };
 
   // Call the API route and set the response to the data state
   const callHelloApiRoute = async () => {
